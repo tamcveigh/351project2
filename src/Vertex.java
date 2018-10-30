@@ -2,7 +2,7 @@
  * @author Tyler McVeigh and Mi'Quel Muldrow
  * @version October 25, 2018 Version 1.0
  */
-public class Vertex implements Comparable{
+public class Vertex implements Comparable<Vertex>{
     /** Unique integer corresponding to a vertex's id number.*/
     public int id;
 
@@ -69,6 +69,21 @@ public class Vertex implements Comparable{
     	}    	
     	return false;
     }
+    
+    
+    /**
+     * Compares two Verticies
+     * If this vertex is a lower ID, then it will return a negative number
+     * If this vertex is the same ID, then it will return 0
+     * If this vertex is the higher ID, then it will return a positive number
+     */
+	@Override
+	public int compareTo(Vertex o) {
+		
+		return this.id - o.id;
+	}
+	
+	//TODO Write toString for Vertex class
     
 }
 

@@ -1,5 +1,4 @@
 import java.util.*;
-import java.io.*;
 /**
  * @author Tyler McVeigh and Mi'Quel Muldrow
  * @version October 25, 2018 Version 1.0
@@ -14,18 +13,23 @@ public class Graph{
 
     /** Value of true represents an edge between two vertices.*/
     private boolean[][] adjMatrix;
-
+    
+    
+    /**
+     * 
+     * @param nums
+     */
     public Graph(ArrayList<Integer> nums){
         
         this.makeVertexList(nums);
+        //System.out.println(this.vertexList);
 		this.makeAdjList(nums);
+		//System.out.println(this.adjList);
 		this.makeAdjMatrix();
+    	//System.out.println(this.adjMatrix);
     }
 
-
-    private void makeAdjMatrix() {
-    	this.adjMatrix = new boolean[vertexList.size()][vertexList.size]();		
-	}
+    
 
 
 	/**
@@ -37,13 +41,16 @@ public class Graph{
     private void makeVertexList(ArrayList<Integer> nums) {
     	
     	this.vertexList = new ArrayList<Vertex>(nums.size());
+    	this.vertexList.ensureCapacity(nums.size());
     	
     	for(int i : nums) {
-    		if( vertexList.get(i) == null ) {
-    			vertexList.add(i, new Vertex(i));
+    		Vertex newVertex = new Vertex(i);
+    		if( !vertexList.contains(newVertex)) {
+    			vertexList.add(newVertex);
     		}  		
     	}
     	this.vertexList.trimToSize();
+    	this.vertexList.sort(null);;
     	
     }
     
@@ -57,8 +64,9 @@ public class Graph{
 		
 		this.adjList = new ArrayList<ArrayList<Integer>>(this.vertexList.size());
 		
-		for(ArrayList<Integer> i : adjList){
-		    i = new ArrayList<Integer>(this.vertexList.size());
+		for(int i = 0; i < this.vertexList.size(); i++){
+		    this.adjList.add(i, 
+		    		new ArrayList<Integer>(this.vertexList.size() ) );
 		}
 		
 		for(int i = 0; i < nums.size(); i++){
@@ -72,11 +80,28 @@ public class Graph{
 			i.sort(null);
 		}
     }
-
+    
+    /**
+     * Helper method for constructor, creates adjMatrix field.
+     * Leaves non-adjacent vertices null in the matrix
+     */
+    private void makeAdjMatrix() {
+    	this.adjMatrix = new boolean[vertexList.size()][vertexList.size()];
+    	
+    	for(int i = 0; i < vertexList.size(); i++) {
+    		
+    		for(int j : adjList.get(i)) {
+    			this.adjMatrix[i][j] = true;
+    		}
+    		
+    	}
+	}
     /**
      * Entry point to run operations specified in the handout.
      */
     public void go(){
+    	
+    	
 
     }
 
