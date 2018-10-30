@@ -2,7 +2,7 @@
  * @author Tyler McVeigh and Mi'Quel Muldrow
  * @version October 25, 2018 Version 1.0
  */
-public class Vertex{
+public class Vertex implements Comparable{
     /** Unique integer corresponding to a vertex's id number.*/
     public int id;
 
@@ -51,6 +51,23 @@ public class Vertex{
      */
     public String getColor(){
         return this.color;
+    }
+    
+    /**
+     * Compares an object to this vertex and see if they are equal
+     * 
+     * @return boolean on whether or not the objects are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+    	
+    	if(o instanceof Vertex) {
+    		Vertex v = (Vertex)o;
+    		if(v.id == this.id && this.color.equals(v.color)) {
+    			return true;
+    		}
+    	}    	
+    	return false;
     }
     
 }
