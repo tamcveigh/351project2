@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.ArrayList;
+
 /**
  * @author Tyler McVeigh and Mi'Quel Muldrow
  * @version October 25, 2018 Version 1.0
@@ -26,7 +27,14 @@ public class Graph{
 		this.makeAdjList(nums);
 		//System.out.println(this.adjList);
 		this.makeAdjMatrix();
-    	//System.out.println(this.adjMatrix);
+		//Prints the adjMatrix
+    	/**for(boolean[] i : adjMatrix) {
+    		for(boolean j : i) {
+    			System.out.print(j + " ");
+    		}
+    		System.out.println("");
+    	}
+    	*/
     }
 
     
@@ -101,8 +109,11 @@ public class Graph{
      */
     public void go(){
     	
+    	this.findSourceDest();
     	
-
+    	
+    	
+    	this.printGraphStats();
     }
 
     /**
@@ -121,21 +132,29 @@ public class Graph{
      * search is exhausted
      */
     public void depthFirstSearch(){
-
+    	
     }
 
     /**
      * Performs a search for cycles
      */
     public void cycleSearch(){
-
+    	
     }
 
     /**
      * Performs the transitive closure algorithm
      */
     public void transitiveClosure(){
-
+    	boolean[][] transClos = new boolean[this.adjMatrix.length][this.adjMatrix.length];
+    	
+    	for(int i = 0; i < adjMatrix.length; i++) {
+    		for(int j = 0; j < adjMatrix.length; j++) {
+    			transClos[i][j] = this.adjMatrix[i][j];
+    		}
+    	}
+    	
+    	
     }
 
     /**
