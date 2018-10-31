@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.ArrayList;
+
 /**
  * @author Tyler McVeigh and Mi'Quel Muldrow
  * @version October 25, 2018 Version 1.0
@@ -26,7 +27,14 @@ public class Graph{
 		this.makeAdjList(nums);
 		//System.out.println(this.adjList);
 		this.makeAdjMatrix();
-    	//System.out.println(this.adjMatrix);
+		//Prints the adjMatrix
+    	/**for(boolean[] i : adjMatrix) {
+    		for(boolean j : i) {
+    			System.out.print(j + " ");
+    		}
+    		System.out.println("");
+    	}
+    	*/
     }
 
     
@@ -101,8 +109,11 @@ public class Graph{
      */
     public void go(){
     	
+    	this.findSourceDest();
     	
-
+    	
+    	
+    	this.printGraphStats();
     }
 
     /**
@@ -138,6 +149,7 @@ public class Graph{
      * Performs a depth-first search from source to destination or until the 
      * search is exhausted
      */
+<<<<<<< HEAD
     public String depthFirstSearch(Vertex start, Vertex end){
     	Vertex vertex = this.vertexList.get(start.getID());
     	ArrayList<Integer> edges;
@@ -170,20 +182,32 @@ public class Graph{
     		search.push(vertex);
     	}
     	return "No way to connect these vertices";
+=======
+    public void depthFirstSearch(){
+    	
+>>>>>>> branch 'master' of https://github.com/tamcveigh/351project2
     }
 
     /**
      * Performs a search for cycles
      */
     public void cycleSearch(){
-
+    	
     }
 
     /**
      * Performs the transitive closure algorithm
      */
     public void transitiveClosure(){
-
+    	boolean[][] transClos = new boolean[this.adjMatrix.length][this.adjMatrix.length];
+    	
+    	for(int i = 0; i < adjMatrix.length; i++) {
+    		for(int j = 0; j < adjMatrix.length; j++) {
+    			transClos[i][j] = this.adjMatrix[i][j];
+    		}
+    	}
+    	
+    	
     }
 
     /**
