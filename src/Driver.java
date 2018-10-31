@@ -14,6 +14,7 @@ public class Driver{
     	//Counts the number of numbers from the file
     	File inputFile = new File(args[0]);
         Scanner sc;
+        System.out.println("Hello");
         ArrayList<Integer> nums = new ArrayList<Integer>();
 		try {
 			sc = new Scanner(inputFile);
@@ -22,7 +23,9 @@ public class Driver{
 			}
 			
 			Graph g1 = new Graph(nums);
-			g1.go();
+			g1.findSourceDest();
+
+			//g1.go();
 		} catch (FileNotFoundException e1) {
 			System.out.println("Invalid File Location");
 			System.exit(1);

@@ -113,15 +113,35 @@ public class Graph{
      * are not found in the graph.
      */
     public void findSourceDest(){
-
+    	Vertex start;
+    	Vertex end;
+    	System.out.print("Please enter valid source and destiniation vertices >> ");
+    	Scanner input = new Scanner(System.in);
+    	try {
+    		int startNum = input.nextInt();
+    		int  endNum = input.nextInt();
+    		if(startNum >= this.vertexList.size()||
+    			endNum >= this.vertexList.size())
+            	throw new IllegalArgumentException("One or both vertices not found");
+    		start = this.vertexList.get(startNum);
+            end = this.vertexList.get(endNum);
+            depthFirstSearch(start, end);
+    	}catch(InputMismatchException e) {
+    		System.out.println("Please input a number");
+    	}
+    	input.close();
+        
+       
     }
 
     /**
      * Performs a depth-first search from source to destination or until the 
      * search is exhausted
      */
-    public void depthFirstSearch(){
-
+    public void depthFirstSearch(Vertex start, Vertex end){
+    	Stack<Vertex> search = new Stack<Vertex>();
+    	
+    	
     }
 
     /**

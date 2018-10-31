@@ -83,7 +83,14 @@ public class Vertex implements Comparable<Vertex>{
 		return this.id - o.id;
 	}
 	
-	//TODO Write toString for Vertex class
+	/**
+	 * Displays the information of the vertex
+	 * 
+	 * @return The string containing the specific information on the vertex
+	 */
+	public String toString() {
+		return "ID: " + this.id + "\nColor: " + this.color;
+	}
     
 }
 
