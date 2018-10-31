@@ -120,6 +120,7 @@ public class Graph{
     	try {
     		int startNum = input.nextInt();
     		int  endNum = input.nextInt();
+    		input.close();
     		if(startNum >= this.vertexList.size()||
     			endNum >= this.vertexList.size())
             	throw new IllegalArgumentException("One or both vertices not found");
@@ -129,7 +130,6 @@ public class Graph{
     	}catch(InputMismatchException e) {
     		System.out.println("Please input a number");
     	}
-    	input.close();
         
        
     }
@@ -138,10 +138,38 @@ public class Graph{
      * Performs a depth-first search from source to destination or until the 
      * search is exhausted
      */
-    public void depthFirstSearch(Vertex start, Vertex end){
+    public String depthFirstSearch(Vertex start, Vertex end){
+    	Vertex vertex = this.vertexList.get(start.getID());
+    	ArrayList<Integer> edges;
+    	String returnOutput = "";
     	Stack<Vertex> search = new Stack<Vertex>();
-    	
-    	
+    	Vertex grayVer;
+    	search.push(vertex);
+    	vertex.changeColor();
+    	returnOutput = "Vertex " + vertex.getID();
+    	while(search.peek()!=null){
+    		edges = this.adjList.get(vertex.getID());
+    		if(edges.size() == 1){
+    			System.out.println(end.getID() + " and " + edges.get(0));
+    			if(end.getID() == edges.get(0)) {
+    				vertex = this.vertexList.get(edges.get(0));
+    				returnOutput += ", Vertex " + vertex.getID();
+    				System.out.println(returnOutput);
+    				return returnOutput;
+    			}else if(this.vertexList.get(edges.get(0)).getColor() == "white") {
+    				vertex = this.vertexList.get(edges.get(0));
+    				vertex.changeColor();
+    				returnOutput += ", Vertex " + vertex.getID() + " Size is " + edges.size();
+    			}
+    		//}else {
+    			//if
+    			//for(int i = 0; i < edges.size(); i++) {
+    				
+    			//}
+    		}
+    		search.push(vertex);
+    	}
+    	return "No way to connect these vertices";
     }
 
     /**
