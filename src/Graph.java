@@ -165,7 +165,7 @@ public class Graph{
     			//if
     			//for(int i = 0; i < edges.size(); i++) {
     				
-    			//}
+    			//
     		}
     		search.push(vertex);
     	}
@@ -192,12 +192,8 @@ public class Graph{
      * @return String - Information to be returned
      */
     public String printGraphStats(){
-        return "Hello World";
+        return "Hello";
     }
-
-
-
-
 
 }
 

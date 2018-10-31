@@ -13,6 +13,7 @@ public class Driver{
     public static void main(String[] args){
     	//Counts the number of numbers from the file
     	File inputFile = new File(args[0]);
+    	System.out.println("Hello");
         Scanner sc;
         ArrayList<Integer> nums = new ArrayList<Integer>();
 		try {
