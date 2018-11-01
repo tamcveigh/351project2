@@ -1,4 +1,7 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.util.Stack;
 
 /**
  * @author Tyler McVeigh and Mi'Quel Muldrow
@@ -149,43 +152,49 @@ public class Graph{
      * Performs a depth-first search from source to destination or until the 
      * search is exhausted
      */
-<<<<<<< HEAD
     public String depthFirstSearch(Vertex start, Vertex end){
     	Vertex vertex = this.vertexList.get(start.getID());
     	ArrayList<Integer> edges;
     	String returnOutput = "";
     	Stack<Vertex> search = new Stack<Vertex>();
-    	Vertex grayVer;
+    	Vertex verToCheck;
+    	boolean hasNewVer = false;
     	search.push(vertex);
     	vertex.changeColor();
     	returnOutput = "Vertex " + vertex.getID();
     	while(search.peek()!=null){
     		edges = this.adjList.get(vertex.getID());
-    		if(edges.size() == 1){
-    			System.out.println(end.getID() + " and " + edges.get(0));
-    			if(end.getID() == edges.get(0)) {
-    				vertex = this.vertexList.get(edges.get(0));
-    				returnOutput += ", Vertex " + vertex.getID();
+    		System.out.println(edges);
+    		hasNewVer = false;
+    		for(int i = 0; i < edges.size(); i++) {
+    			verToCheck = this.vertexList.get(edges.get(i));
+    			if(end.getID() == verToCheck.getID() && hasNewVer == false) {
+    				returnOutput += ", Vertex " + verToCheck.getID();
     				System.out.println(returnOutput);
     				return returnOutput;
-    			}else if(this.vertexList.get(edges.get(0)).getColor() == "white") {
-    				vertex = this.vertexList.get(edges.get(0));
-    				vertex.changeColor();
-    				returnOutput += ", Vertex " + vertex.getID() + " Size is " + edges.size();
     			}
-    		//}else {
-    			//if
-    			//for(int i = 0; i < edges.size(); i++) {
-    				
-    			//
+    			if(verToCheck.getColor() == "white" && hasNewVer == false) {
+    				vertex = verToCheck;
+    				vertex.changeColor();
+    				search.push(vertex);
+    				returnOutput += ", Vertex " + vertex.getID();
+    				System.out.println(returnOutput);
+    				hasNewVer = true;
+    			}
     		}
-    		search.push(vertex);
+    		if(hasNewVer == false){
+    			if(search.empty())
+    				return "No way to connect these vertices";
+    			vertex.changeColor();
+    			System.out.println("popping...");
+    			search.pop();
+    		}
+    		if(search.peek() != null) {
+    			vertex = search.peek();
+    		}
+    		
     	}
-    	return "No way to connect these vertices";
-=======
-    public void depthFirstSearch(){
-    	
->>>>>>> branch 'master' of https://github.com/tamcveigh/351project2
+    	return "No way to connect these vertices"; 	
     }
 
     /**
