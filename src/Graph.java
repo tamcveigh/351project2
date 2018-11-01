@@ -140,7 +140,7 @@ public class Graph{
             	throw new IllegalArgumentException("One or both vertices not found");
     		start = this.vertexList.get(startNum);
             end = this.vertexList.get(endNum);
-            depthFirstSearch(start, end);
+            System.out.println(depthFirstSearch(start, end));
     	}catch(InputMismatchException e) {
     		System.out.println("Please input a number");
     	}
@@ -151,8 +151,13 @@ public class Graph{
     /**
      * Performs a depth-first search from source to destination or until the 
      * search is exhausted
+     * 
+     * @param Vertex start - The first vertex to be used to find a path to the end vertex
+     * @param Vertex end - The vertex being searched for  
+     * @return A string of the path between the start and end vertices if one exists.
      */
     public String depthFirstSearch(Vertex start, Vertex end){
+    	//Initializes all needed variables and then sets up the stack with the start vertex
     	Vertex vertex = this.vertexList.get(start.getID());
     	ArrayList<Integer> edges;
     	String returnOutput = "";
@@ -162,38 +167,60 @@ public class Graph{
     	search.push(vertex);
     	vertex.changeColor();
     	returnOutput = "Vertex " + vertex.getID();
+    	
+    	//While loop starts the depth first search and loops until the stack 
+    	//has been emptied or a path has been found
     	while(search.peek()!=null){
     		edges = this.adjList.get(vertex.getID());
-    		System.out.println(edges);
     		hasNewVer = false;
+    		
+    		//For loop takes the edges of the vertex at the top of the stack and uses them to determine
+    		//the next step in the path or if we've found the end of the path
     		for(int i = 0; i < edges.size(); i++) {
-    			verToCheck = this.vertexList.get(edges.get(i));
-    			if(end.getID() == verToCheck.getID() && hasNewVer == false) {
-    				returnOutput += ", Vertex " + verToCheck.getID();
-    				System.out.println(returnOutput);
+    			
+    			//If statement determined if the start and end vertices are the same
+    			if(end.getID() == vertex.getID()) {
     				return returnOutput;
-    			}
-    			if(verToCheck.getColor() == "white" && hasNewVer == false) {
+    			}//end if statement
+    			
+    			verToCheck = this.vertexList.get(edges.get(i));
+    			//Using a boolean to see if there's already a new vertex on the stack, this else if statement determines if the 
+    			//vertex we are looking at is the vertex the user wanted to find
+    			if(end.getID() == verToCheck.getID() && hasNewVer == false){
+    				returnOutput += ", Vertex " + verToCheck.getID();
+    				return returnOutput;
+    			}//end if statement
+    			
+    			//Using a boolean to see if there's already a new vertex on the stack, this else if statement determines if the 
+    			//vertex we are looking at is new to the stack and pushes the new vertex so we can look at its edges in the next loop
+    			else if(verToCheck.getColor() == "white" && hasNewVer == false) {
     				vertex = verToCheck;
     				vertex.changeColor();
     				search.push(vertex);
     				returnOutput += ", Vertex " + vertex.getID();
-    				System.out.println(returnOutput);
     				hasNewVer = true;
     			}
     		}
-    		if(hasNewVer == false){
-    			if(search.empty())
-    				return "No way to connect these vertices";
-    			vertex.changeColor();
-    			System.out.println("popping...");
-    			search.pop();
-    		}
-    		if(search.peek() != null) {
-    			vertex = search.peek();
-    		}
     		
-    	}
+    		//Using a boolean to see if there were no new vertices connected to the currently being looked at vertex, 
+    		//this if statement fixes our output and then takes the vertex off of the stack 
+    		if(hasNewVer == false){
+    			vertex.changeColor();
+    			returnOutput = returnOutput.replace(", Vertex " + vertex.getID(), "") ;
+    			search.pop();
+    		}//end if statement
+    		
+    		//If statement determines if the stack has objects in it and then makes our current vertex the top of the stack 
+    		if(!(search.empty())) {
+    			vertex = search.peek();
+    		}//end if statement
+    		
+    		//Else determines if the stack has no objects in it, if it is empty, then returns a statement telling the user
+    		else{
+    			return "No way to connect these vertices";
+    		}//end else
+    		
+    	}//end while loop
     	return "No way to connect these vertices"; 	
     }
 
