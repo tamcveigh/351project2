@@ -31,8 +31,6 @@ public class Vertex implements Comparable<Vertex>{
             this.color = "gray";
         else if(this.color == "gray")
             this.color = "black";
-        else if(this.color == "black")
-            System.out.println("color is black, something is incorrect");
     }
 
     /**

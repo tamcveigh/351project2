@@ -141,6 +141,7 @@ public class Graph{
     		start = this.vertexList.get(startNum);
             end = this.vertexList.get(endNum);
             System.out.println(depthFirstSearch(start, end));
+            System.out.println(cycleSearch(start, end));
     	}catch(InputMismatchException e) {
     		System.out.println("Please input a number");
     	}
@@ -161,12 +162,14 @@ public class Graph{
     	Vertex vertex = this.vertexList.get(start.getID());
     	ArrayList<Integer> edges;
     	String returnOutput = "";
+    	String path = "";
     	Stack<Vertex> search = new Stack<Vertex>();
     	Vertex verToCheck;
     	boolean hasNewVer = false;
     	search.push(vertex);
     	vertex.changeColor();
-    	returnOutput = "Vertex " + vertex.getID();
+    	returnOutput = "[DFS Discovered Vertices: " + start.getID() + ", " + end.getID() + "] Vertex " + vertex.getID();
+    	path = "[DFS Path: " + start.getID() + ", " + end.getID() + "] Vertex " + vertex.getID();
     	
     	//While loop starts the depth first search and loops until the stack 
     	//has been emptied or a path has been found
@@ -177,18 +180,15 @@ public class Graph{
     		//For loop takes the edges of the vertex at the top of the stack and uses them to determine
     		//the next step in the path or if we've found the end of the path
     		for(int i = 0; i < edges.size(); i++) {
-    			
-    			//If statement determined if the start and end vertices are the same
-    			if(end.getID() == vertex.getID()) {
-    				return returnOutput;
-    			}//end if statement
-    			
     			verToCheck = this.vertexList.get(edges.get(i));
+    			
     			//Using a boolean to see if there's already a new vertex on the stack, this else if statement determines if the 
     			//vertex we are looking at is the vertex the user wanted to find
     			if(end.getID() == verToCheck.getID() && hasNewVer == false){
     				returnOutput += ", Vertex " + verToCheck.getID();
-    				return returnOutput;
+    				path += " -> Vertex " + verToCheck.getID();
+    				//System.out.println(path);
+    				return returnOutput + "\n" + path;
     			}//end if statement
     			
     			//Using a boolean to see if there's already a new vertex on the stack, this else if statement determines if the 
@@ -198,6 +198,7 @@ public class Graph{
     				vertex.changeColor();
     				search.push(vertex);
     				returnOutput += ", Vertex " + vertex.getID();
+    				path += " -> Vertex " + vertex.getID();
     				hasNewVer = true;
     			}
     		}
@@ -206,7 +207,8 @@ public class Graph{
     		//this if statement fixes our output and then takes the vertex off of the stack 
     		if(hasNewVer == false){
     			vertex.changeColor();
-    			returnOutput = returnOutput.replace(", Vertex " + vertex.getID(), "") ;
+    			//returnOutput = returnOutput.replace(", Vertex " + vertex.getID(), "") ;
+    			path = path.replace(" -> Vertex " + vertex.getID(), "");
     			search.pop();
     		}//end if statement
     		
@@ -226,9 +228,83 @@ public class Graph{
 
     /**
      * Performs a search for cycles
+     * 
+     * @param Vertex start - The starting vertex
+     * @param Vertex end - The vertex being searched for
+     * @return String - Whether or not there was a cycle in the path
      */
-    public void cycleSearch(){
+    public String cycleSearch(Vertex start, Vertex end){
+    	Vertex vertex = this.vertexList.get(start.getID());
+    	ArrayList<Integer> edges;
+    	Stack<Vertex> search = new Stack<Vertex>();
+    	Vertex verToCheck;
+    	boolean cycle = false;
+    	boolean hasNewVer = false;
+    	search.push(vertex);
+    	vertex.changeColor();
     	
+    	//While loop starts the depth first search and loops until the stack 
+    	//has been emptied or a path has been found
+    	while(search.peek()!=null){
+    		edges = this.adjList.get(vertex.getID());
+    		hasNewVer = false;
+    		
+    		for(int i = 0; i < edges.size(); i++) {
+    			if(!(this.vertexList.get(edges.get(i)).getColor() == "white")) {
+    				cycle = true;
+    			}
+    		}
+    		//For loop takes the edges of the vertex at the top of the stack and uses them to determine
+    		//the next step in the path or if we've found the end of the path
+    		for(int i = 0; i < edges.size(); i++) {
+    			
+    			verToCheck = this.vertexList.get(edges.get(i));
+    			//Using a boolean to see if there's already a new vertex on the stack, this else if statement determines if the 
+    			//vertex we are looking at is the vertex the user wanted to find and then says if there is a cycle or not.
+    			if(end.getID() == verToCheck.getID() && hasNewVer == false){
+    				if(cycle) {
+    					return "[Cycle]: Cycle detected";
+    				}
+    				else {
+    					return "[Cycle]: No cycle detected";
+    				}
+    			}//end if statement
+    			
+    			//Using a boolean to see if there's already a new vertex on the stack, this else if statement determines if the 
+    			//vertex we are looking at is new to the stack and pushes the new vertex so we can look at its edges in the next loop
+    			if(verToCheck.getColor() == "white" && hasNewVer == false) {
+    				vertex = verToCheck;
+    				vertex.changeColor();
+    				search.push(vertex);
+    				hasNewVer = true;
+    			}
+    		}
+    		
+    		//Using a boolean to see if there were no new vertices connected to the currently being looked at vertex, 
+    		//this if statement says if there's been a discovered cycle and if not pops the stack 
+    		if(hasNewVer == false){
+    			if(cycle) {
+    				return "[Cycle]: Cycle detected";
+    			}
+    			else {
+    				vertex.changeColor();
+        			search.pop();
+    			}
+    		}//end if statement
+    		
+    		//If statement determines if the stack has objects in it and then makes our current vertex the top of the stack 
+    		if(!(search.empty())) {
+    			vertex = search.peek();
+    		}//end if statement
+    		
+    		//Else determines if the stack has no objects in it, if it is empty, then returns a statement telling the user
+    		//there were no cycles
+    		else{
+    			return "[Cycle]: No cycle detected";
+    		}//end else
+    		
+    	}//end while loop
+    	return "[Cycle]: No cycle detected";
     }
 
     /**
