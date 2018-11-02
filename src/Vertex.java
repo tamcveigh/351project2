@@ -36,6 +36,13 @@ public class Vertex implements Comparable<Vertex>{
         else if(this.color == "gray")
             this.color = "black";
     }
+    
+    /**
+     * Resets the color of the vertex for cycleSearch
+     */
+    public void resetColor() {
+    	this.color = "white";
+    }
 
     /**
      * Returns the ID of the vertex.
