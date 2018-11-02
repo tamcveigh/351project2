@@ -18,7 +18,12 @@ public class Graph{
 
     /** Value of true represents an edge between two vertices.*/
     private boolean[][] adjMatrix;
+
+    /**Start vertex to be initialized in findSourceDest*/
+    private Vertex start;
     
+    /**End vertex to be initialized in findSourceDest*/
+    private Vertex end;
     
     /**
      * The constructor for the Graph. Takes a list containing edges, and
@@ -36,8 +41,7 @@ public class Graph{
 		//System.out.println(this.adjList);
 		this.makeAdjMatrix();
 		
-		//Prints the adjMatrix
-		
+		//Prints the adjMatrix	
     	/**for(boolean[] i : adjMatrix) {
     		for(boolean j : i) {
     			System.out.print(j + " ");
@@ -46,9 +50,6 @@ public class Graph{
     	}
     	*/
     }
-
-    
-
 
 	/**
      * Helper function for main, creates the vertexList
@@ -68,8 +69,7 @@ public class Graph{
     		}  		
     	}
     	this.vertexList.trimToSize();
-    	this.vertexList.sort(null);;
-    	
+    	this.vertexList.sort(null);;    	
     }
     
     /**
@@ -78,8 +78,6 @@ public class Graph{
      * @param nums the inputed edge list
      */
     private void makeAdjList(ArrayList<Integer> nums) {
-		
-		
 		this.adjList = new ArrayList<ArrayList<Integer>>(this.vertexList.size());
 		
 		for(int i = 0; i < this.vertexList.size(); i++){
@@ -114,16 +112,14 @@ public class Graph{
     		
     	}
 	}
+    
     /**
      * Entry point to run operations specified in the hand-out.
      */
     public void go(){
-    	
     	this.findSourceDest();
-    	
-    	
-    	
-    	this.printGraphStats();
+    	this.printGraphStats(depthFirstSearch(this.start, this.end), cycleSearch(this.start, this.end), 
+    						 "TC goes here");
     }
 
     /**
@@ -134,8 +130,6 @@ public class Graph{
      * are not found in the graph.
      */
     public void findSourceDest(){
-    	Vertex start;
-    	Vertex end;
     	System.out.print("Please enter valid source and destiniation vertices >> ");
     	Scanner input = new Scanner(System.in);
     	try {
@@ -145,10 +139,8 @@ public class Graph{
     		if(startNum >= this.vertexList.size()||
     			endNum >= this.vertexList.size())
             	throw new IllegalArgumentException("One or both vertices not found");
-    		start = this.vertexList.get(startNum);
-            end = this.vertexList.get(endNum);
-            System.out.println(depthFirstSearch(start, end));
-            System.out.println(cycleSearch(start, end));
+    		this.start = this.vertexList.get(startNum);
+            this.end = this.vertexList.get(endNum);
     	}catch(InputMismatchException e) {
     		System.out.println("Please input a number");
     	}
@@ -243,6 +235,7 @@ public class Graph{
      * @return String - Whether or not there was a cycle in the path
      */
     public String cycleSearch(Vertex start, Vertex end){
+    	//Initializing all variables to be used and sets up the stack
     	Vertex vertex = this.vertexList.get(start.getID());
     	ArrayList<Integer> edges;
     	Stack<Vertex> search = new Stack<Vertex>();
@@ -351,11 +344,16 @@ public class Graph{
 
     /**
      * Prints the information as specified in the hand-out.
-     *
-     * @return String - Information to be returned
+     * 
+     * @param String dfs - The information output from the dfs method
+     * @param String cycle - The information output from the cycle search method
+     * @param String tc - The information output from the tc method
      */
-    public void printGraphStats(){
-    	
+    public void printGraphStats(String dfs, String cycle, String tc){
+    	System.out.println(dfs);
+    	System.out.println(tc);
+    	System.out.println(cycle);
+    		
         return;
     }
 
