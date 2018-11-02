@@ -8,6 +8,7 @@ import java.util.Stack;
  * @version October 25, 2018 Version 1.0
  */
 public class Graph{
+	
     /** List of vertices in the graph where the index in corresponds to
      * vertex number.*/
     private ArrayList<Vertex> vertexList;
@@ -20,8 +21,12 @@ public class Graph{
     
     
     /**
+     * The constructor for the Graph. Takes a list containing edges, and
+     * creates a vertex list, adjacency list and adjacency matrix out of the
+     * list of edges
      * 
-     * @param nums
+     * @param nums An ArrayList containing where numbers are paired in even-odd slots (i.e. 0 and 1, 2 and 3, 4 and 5, etc.)
+     * 			   as edges
      */
     public Graph(ArrayList<Integer> nums){
         
@@ -30,7 +35,9 @@ public class Graph{
 		this.makeAdjList(nums);
 		//System.out.println(this.adjList);
 		this.makeAdjMatrix();
+		
 		//Prints the adjMatrix
+		
     	/**for(boolean[] i : adjMatrix) {
     		for(boolean j : i) {
     			System.out.print(j + " ");
@@ -108,7 +115,7 @@ public class Graph{
     	}
 	}
     /**
-     * Entry point to run operations specified in the handout.
+     * Entry point to run operations specified in the hand-out.
      */
     public void go(){
     	
@@ -158,6 +165,7 @@ public class Graph{
      * @return A string of the path between the start and end vertices if one exists.
      */
     public String depthFirstSearch(Vertex start, Vertex end){
+    	
     	//Initializes all needed variables and then sets up the stack with the start vertex
     	Vertex vertex = this.vertexList.get(start.getID());
     	ArrayList<Integer> edges;
@@ -166,6 +174,7 @@ public class Graph{
     	Stack<Vertex> search = new Stack<Vertex>();
     	Vertex verToCheck;
     	boolean hasNewVer = false;
+    	
     	search.push(vertex);
     	vertex.changeColor();
     	returnOutput = "[DFS Discovered Vertices: " + start.getID() + ", " + end.getID() + "] Vertex " + vertex.getID();
@@ -310,25 +319,44 @@ public class Graph{
     /**
      * Performs the transitive closure algorithm
      */
-    public void transitiveClosure(){
+    public boolean[][] transitiveClosure(){
     	boolean[][] transClos = new boolean[this.adjMatrix.length][this.adjMatrix.length];
+    	boolean ijPair;
     	
-    	for(int i = 0; i < adjMatrix.length; i++) {
-    		for(int j = 0; j < adjMatrix.length; j++) {
+    	//Sets up the matrix to perform transitive closure
+    	for(int i = 0; i < this.adjMatrix.length; i++) {
+    		for(int j = 0; j < this.adjMatrix.length; j ++) {
     			transClos[i][j] = this.adjMatrix[i][j];
     		}
     	}
     	
+    	//Performs the Transitive Closure
+    	//h is the row and column currently selected
+    	for(int h = 0; h < this.adjMatrix.length; h++) {
+    		//i is the starting vertex
+    		for(int i = 0; i < this.adjMatrix.length; i++) {
+    			//j is the destination vertex
+    			for(int j = 0; j < this.adjMatrix.length; j++) {
+    				
+    				ijPair = this.adjMatrix[h][j] && this.adjMatrix[i][h];
+    				this.adjMatrix[i][j] = this.adjMatrix[i][j] || ijPair;
+    				
+    			}
+    		}
+    	}
+    	
+    	return transClos;
     	
     }
 
     /**
-     * Prints the information as specified in the handout.
+     * Prints the information as specified in the hand-out.
      *
      * @return String - Information to be returned
      */
-    public String printGraphStats(){
-        return "Hello";
+    public void printGraphStats(){
+    	
+        return;
     }
 
 }

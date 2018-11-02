@@ -1,4 +1,8 @@
 /**
+ * This class models a vertex in a graph. It is comparable
+ * 
+ * 
+ * 
  * @author Tyler McVeigh and Mi'Quel Muldrow
  * @version October 25, 2018 Version 1.0
  */
@@ -8,7 +12,7 @@ public class Vertex implements Comparable<Vertex>{
 
     /** 
      * Color of the vertex: white = unvisited, gray = currently being viewed,
-     * black = visisted
+     * black = visited
      */
     public String color;
     
@@ -70,7 +74,7 @@ public class Vertex implements Comparable<Vertex>{
     
     
     /**
-     * Compares two Verticies
+     * Compares two Vertices
      * If this vertex is a lower ID, then it will return a negative number
      * If this vertex is the same ID, then it will return 0
      * If this vertex is the higher ID, then it will return a positive number
