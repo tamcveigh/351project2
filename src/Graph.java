@@ -30,32 +30,23 @@ public class Graph{
      * creates a vertex list, adjacency list and adjacency matrix out of the
      * list of edges
      * 
-     * @param nums An ArrayList containing where numbers are paired in even-odd slots (i.e. 0 and 1, 2 and 3, 4 and 5, etc.)
-     * 			   as edges
+     * @param nums - An ArrayList containing where numbers are paired in 
+     *               even-odd slots (i.e. 0 and 1, 2 and 3, 4 and 5, etc.) 
+     *               as edges
      */
     public Graph(ArrayList<Integer> nums){
-        
         this.makeVertexList(nums);
-        //System.out.println(this.vertexList);
 		this.makeAdjList(nums);
-		//System.out.println(this.adjList);
 		this.makeAdjMatrix();
-		
-		//Prints the adjMatrix	
-    	/**for(boolean[] i : adjMatrix) {
-    		for(boolean j : i) {
-    			System.out.print(j + " ");
-    		}
-    		System.out.println("");
-    	}
-    	*/
     }
 
 	/**
      * Helper function for main, creates the vertexList
      * field
      * 
-     * @param nums
+     * @param nums - An ArrayList containing where numbers are paired in 
+     *               even-odd slots (i.e. 0 and 1, 2 and 3, 4 and 5, etc.) 
+     *               as edges
      */
     private void makeVertexList(ArrayList<Integer> nums) {
     	
@@ -75,10 +66,13 @@ public class Graph{
     /**
      * Helper method for constructor. Creates the adjList field
      * 
-     * @param nums the inputed edge list
+     * @param nums - An ArrayList containing where numbers are paired in 
+     *               even-odd slots (i.e. 0 and 1, 2 and 3, 4 and 5, etc.) 
+     *               as edges
      */
     private void makeAdjList(ArrayList<Integer> nums) {
-		this.adjList = new ArrayList<ArrayList<Integer>>(this.vertexList.size());
+		this.adjList = new ArrayList<ArrayList<Integer>>
+                            (this.vertexList.size());
 		
 		for(int i = 0; i < this.vertexList.size(); i++){
 		    this.adjList.add(i, 
@@ -118,8 +112,8 @@ public class Graph{
      */
     public void go(){
     	this.findSourceDest();
-    	this.printGraphStats(depthFirstSearch(this.start, this.end), cycleSearch(), 
-    						 "TC goes here");
+    	this.printGraphStats(depthFirstSearch(this.start, this.end), 
+                             cycleSearch(), transitiveClosure());
     }
 
     /**
@@ -130,7 +124,8 @@ public class Graph{
      * are not found in the graph.
      */
     public void findSourceDest(){
-    	System.out.print("Please enter valid source and destiniation vertices >> ");
+    	System.out.print("Please enter valid source and" + 
+                            " destiniation vertices >> ");
     	Scanner input = new Scanner(System.in);
     	try {
     		int startNum = input.nextInt();
@@ -138,7 +133,8 @@ public class Graph{
     		input.close();
     		if(startNum >= this.vertexList.size()||
     			endNum >= this.vertexList.size())
-            	throw new IllegalArgumentException("One or both vertices not found");
+            	throw new IllegalArgumentException("One or both vertices" + 
+                                                    " not found");
     		this.start = this.vertexList.get(startNum);
             this.end = this.vertexList.get(endNum);
     	}catch(InputMismatchException e) {
@@ -152,13 +148,15 @@ public class Graph{
      * Performs a depth-first search from source to destination or until the 
      * search is exhausted
      * 
-     * @param Vertex start - The first vertex to be used to find a path to the end vertex
+     * @param Vertex start - The first vertex to be used to find a path to 
+     *                       the end vertex
      * @param Vertex end - The vertex being searched for  
-     * @return A string of the path between the start and end vertices if one exists.
+     * @return String - A string of the path between the start and end vertices 
+     *                  if one exists.
      */
     public String depthFirstSearch(Vertex start, Vertex end){
-    	
-    	//Initializes all needed variables and then sets up the stack with the start vertex
+    	//Initializes all needed variables and then 
+        //sets up the stack with the start vertex
     	Vertex vertex = this.vertexList.get(start.getID());
     	ArrayList<Integer> edges;
     	String returnOutput = "";
@@ -166,11 +164,12 @@ public class Graph{
     	Stack<Vertex> search = new Stack<Vertex>();
     	Vertex verToCheck;
     	boolean hasNewVer = false;
-    	
     	search.push(vertex);
     	vertex.changeColor();
-    	returnOutput = "[DFS Discovered Vertices: " + start.getID() + ", " + end.getID() + "] Vertex " + vertex.getID();
-    	path = "[DFS Path: " + start.getID() + ", " + end.getID() + "] Vertex " + vertex.getID();
+    	returnOutput = "[DFS Discovered Vertices: " + start.getID() + 
+                        ", " + end.getID() + "] Vertex " + vertex.getID();
+    	path = "[DFS Path: " + start.getID() + ", " 
+                + end.getID() + "] Vertex " + vertex.getID();
     	
     	//While loop starts the depth first search and loops until the stack 
     	//has been emptied or a path has been found
@@ -178,13 +177,15 @@ public class Graph{
     		edges = this.adjList.get(vertex.getID());
     		hasNewVer = false;
     		
-    		//For loop takes the edges of the vertex at the top of the stack and uses them to determine
-    		//the next step in the path or if we've found the end of the path
+    		//For loop takes the edges of the vertex at the top of the stack 
+            //and uses them to determine the next step in the path or if 
+            //we've found the end of the path
     		for(int i = 0; i < edges.size(); i++) {
     			verToCheck = this.vertexList.get(edges.get(i));
     			
-    			//Using a boolean to see if there's already a new vertex on the stack, this if statement determines if the 
-    			//vertex we are looking at is the vertex the user wanted to find
+    			//Using a boolean to see if there's already a new vertex on the 
+                //stack, this if statement determines if the vertex we are 
+                //looking at is the vertex the user wanted to find
     			if(end.getID() == verToCheck.getID() && hasNewVer == false){
     				returnOutput += ", Vertex " + verToCheck.getID();
     				path += " -> Vertex " + verToCheck.getID();
@@ -192,9 +193,12 @@ public class Graph{
     				return returnOutput + "\n" + path;
     			}//end if statement
     			
-    			//Using a boolean to see if there's already a new vertex on the stack, this else if statement determines if the 
-    			//vertex we are looking at is new to the stack and pushes the new vertex so we can look at its edges in the next loop
-    			else if(verToCheck.getColor() == "white" && hasNewVer == false) {
+    			//Using a boolean to see if there's already a new vertex on the 
+                //stack, this else if statement determines if the vertex we are 
+                //looking at is new to the stack and pushes the new vertex so 
+                //we can look at its edges in the next loop
+    			else if(verToCheck.getColor() == "white" 
+                        && hasNewVer == false) {
     				vertex = verToCheck;
     				vertex.changeColor();
     				search.push(vertex);
@@ -204,26 +208,29 @@ public class Graph{
     			}
     		}
     		
-    		//Using a boolean to see if there were no new vertices connected to the currently being looked at vertex, 
-    		//this if statement fixes our output and then takes the vertex off of the stack 
+    		//Using a boolean to see if there were no new vertices connected to 
+            //the currently being looked at vertex, this if statement fixes our 
+            //output and then takes the vertex off of the stack 
     		if(hasNewVer == false){
     			vertex.changeColor();
     			path = path.replace(" -> Vertex " + vertex.getID(), "");
     			search.pop();
     		}//end if statement
     		
-    		//If statement determines if the stack has objects in it and then makes our current vertex the top of the stack 
+    		//If statement determines if the stack has objects in it and then
+            // makes our current vertex the top of the stack 
     		if(!(search.empty())) {
     			vertex = search.peek();
     		}//end if statement
     		
-    		//Else determines if the stack has no objects in it, if it is empty, then returns a statement telling the user
+    		//Else determines if the stack has no objects in it, if it is 
+            //empty, then returns a statement telling the user
     		else{
-    			return "[DFS]: No way to connect these vertices";
+    			return "Not Found";
     		}//end else
     		
     	}//end while loop
-    	return "No way to connect these vertices"; 	
+    	return "Not Found"; 	
     }
 
     /**
@@ -252,21 +259,23 @@ public class Graph{
     		edges = this.adjList.get(vertex.getID());
     		hasNewVer = false;
     		
-    		//For Loop determines if a vertex connected to the new vertex is new or old
-    		//if it's old, a cycle has been found
+    		//For Loop determines if a vertex connected to the new vertex is 
+            //new or old if it's old, a cycle has been found
     		for(int i = 0; i < edges.size(); i++) {
     			if(this.vertexList.get(edges.get(i)).getColor() == "gray") {
     				return "[Cycle]: Cycle Detected";
     			}
     		}//End for loop*/
     		
-    		//For loop takes the edges of the vertex at the top of the stack and uses them to determine
-    		//the next step in the path
+    		//For loop takes the edges of the vertex at the top of the stack 
+            //and uses them to determine the next step in the path
     		for(int i = 0; i < edges.size(); i++) {
     			verToCheck = this.vertexList.get(edges.get(i));
 
-    			//Using a boolean to see if there's already a new vertex on the stack, this if statement determines if the 
-    			//vertex we are looking at is new to the stack and pushes the new vertex so we can look at its edges in the next loop
+    			//Using a boolean to see if there's already a new vertex on the 
+                //stack, this if statement determines if the vertex we are 
+                //looking at is new to the stack and pushes the new vertex so 
+                //we can look at its edges in the next loop
     			if(verToCheck.getColor() == "white" && hasNewVer == false) {
     				vertex = verToCheck;
     				vertex.changeColor();
@@ -275,20 +284,23 @@ public class Graph{
     			}
     		}
     		
-    		//Using a boolean to see if there were no new vertices connected to the currently being looked at vertex, 
-    		//this if statement changes the color to black and takes the vertex off the stack 
+    		//Using a boolean to see if there were no new vertices connected to 
+            //the currently being looked at vertex, this if statement changes 
+            //the color to black and takes the vertex off the stack 
     		if(hasNewVer == false){
     			vertex.changeColor();
         		search.pop();
     		}//end if statement
     		
-    		//If statement determines if the stack has objects in it and then makes our current vertex the top of the stack 
+    		//If statement determines if the stack has objects in it and then 
+            //makes our current vertex the top of the stack 
     		if(!(search.empty())) {
     			vertex = search.peek();
     		}//end if statement
     		
-    		//Else determines if the stack has no objects in it, if it is empty, then returns a statement telling the user
-    		//there were no cycles
+    		//Else determines if the stack has no objects in it, if it is 
+            //empty, then returns a statement telling the user there were 
+    		//no cycles
     		else{
     			return "[Cycle]: No cycle detected";
     		}//end else
@@ -299,10 +311,14 @@ public class Graph{
 
     /**
      * Performs the transitive closure algorithm
+     *
+     * @return String - The string of new edges
      */
-    public boolean[][] transitiveClosure(){
-    	boolean[][] transClos = new boolean[this.adjMatrix.length][this.adjMatrix.length];
+    public String transitiveClosure(){
+    	boolean[][] transClos = new boolean[this.adjMatrix.length]
+                                           [this.adjMatrix.length];
     	boolean ijPair;
+    	String transClosString = "[TC: New Edges] ";
     	
     	//Sets up the matrix to perform transitive closure
     	for(int i = 0; i < this.adjMatrix.length; i++) {
@@ -318,15 +334,19 @@ public class Graph{
     		for(int i = 0; i < this.adjMatrix.length; i++) {
     			//j is the destination vertex
     			for(int j = 0; j < this.adjMatrix.length; j++) {
-    				
     				ijPair = this.adjMatrix[h][j] && this.adjMatrix[i][h];
+
+                    //If statement composes the string of brand new edges
+    				if(this.adjMatrix[i][j] == false && ijPair) {
+    					transClosString += "\n\t\t" + i +"\t"+ j;
+    				}//end if statement
+
     				this.adjMatrix[i][j] = this.adjMatrix[i][j] || ijPair;
-    				
     			}
     		}
     	}
-    	
-    	return transClos;
+    	transClosString = transClosString.replaceFirst("\n\t\t", "");
+    	return transClosString;
     	
     }
 
@@ -334,13 +354,14 @@ public class Graph{
      * Prints the information as specified in the hand-out.
      * 
      * @param String dfs - The information output from the dfs method
-     * @param String cycle - The information output from the cycle search method
+     * @param String cycle - The information output from the cycle search 
+     *                       method
      * @param String tc - The information output from the tc method
      */
     public void printGraphStats(String dfs, String cycle, String tc){
-    	System.out.println(dfs);
-    	System.out.println(tc);
-    	System.out.println(cycle);
+    	System.out.println(dfs + "\n");
+    	System.out.println(tc + "\n");
+    	System.out.println(cycle + "\n");
     		
         return;
     }

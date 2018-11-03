@@ -16,20 +16,23 @@ public class Driver{
         Scanner sc;
         ArrayList<Integer> nums = new ArrayList<Integer>();
 		try {
-			//Adding all numbers from the file into a list to be manipulated for the graph
+			//Adding all numbers from the file into a list to be 
+            //manipulated for the graph
 			sc = new Scanner(inputFile);
 			while(sc.hasNextInt()) {
 				nums.add(sc.nextInt());
 			}
 			
-			//If the amount of numbers is even and there is at least 2 numbers in the file (since 0%2 = 0)
+			//If the amount of numbers is even and there is at least 2 numbers 
+            //in the file (since 0%2 = 0)
 			if(nums.size()%2 == 0 && nums.size() != 0) {
 				Graph g1 = new Graph(nums);
 				g1.go();
 			}//end if statement
 			
 			else {
-				throw new IllegalArgumentException("Please enter a file with an even amount of numbers");
+				throw new IllegalArgumentException("Please enter a file with" + 
+                " an even amount of numbers");
 			}
 
 		} catch (FileNotFoundException e1) {
